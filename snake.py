@@ -12,8 +12,7 @@ difficulty = input("Ingresa nivel de dificultad (1:Fácil, 2:Medio, 3:Difícil):
 assert difficulty.isdigit(), "El valor ingresado debe ser un número entre 1 y 3"
 difficulty = int(difficulty)
 assert difficulty in [1,2,3,4], "El valor ingresado debe ser un número entre 1 y 3"
-#difficulty = (difficulty**2)*10
-difficulty = 200
+difficulty = (difficulty**2)*10
 
 # Checks for errors encountered
 check_errors = pygame.init()
@@ -54,6 +53,11 @@ score = 0
 
 # Game Over
 def game_over():
+    global snake_pos
+    global snake_body
+    global score
+    global change_to
+    global direction
     my_font = pygame.font.SysFont('times new roman', 90)
     game_over_surface = my_font.render('GAME OVER', True, red)
     game_over_rect = game_over_surface.get_rect()
@@ -62,11 +66,28 @@ def game_over():
     game_window.blit(game_over_surface, game_over_rect)
     show_score(0, red, 'consolas', 20)
     pygame.display.flip()
-    time.sleep(3)
-    pygame.quit()
-    sys.exit()
-    
-    
+
+    flag = True
+    while flag:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+                    flag = False
+                    break
+                elif event.key == ord('c'):
+                    game_window.fill(black)
+                    pygame.display.flip()
+                    time.sleep(0.5)
+                    snake_pos = [100, 50]
+                    snake_body = [[100, 50], [100 - 10, 50], [100 - (2 * 10), 50]]
+                    score = 0
+                    direction = 'RIGHT'
+                    change_to = direction
+                    flag = False
+                    break
+
 # Score
 def show_score(choice, color, font, size):
     score_font = pygame.font.SysFont(font, size)
