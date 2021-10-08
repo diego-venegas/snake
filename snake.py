@@ -64,7 +64,20 @@ def game_over():
     time.sleep(3)
     pygame.quit()
     sys.exit()
-    
+
+#Win Game
+def win_game():
+    my_font = pygame.font.SysFont('times new roman', 90)
+    win_game_surface = my_font.render('YOU WIN', True, green)
+    win_game_rect = win_game_surface.get_rect()
+    win_game_rect.midtop = (frame_size_x/2, frame_size_y/4)
+    game_window.fill(black)
+    game_window.blit(win_game_surface, win_game_rect)
+    show_score(0, white, 'consolas', 20)
+    pygame.display.flip()
+    time.sleep(3)
+    pygame.quit()
+    sys.exit()
     
 # Score
 def show_score(choice, color, font, size):
@@ -154,6 +167,10 @@ while True:
     for block in snake_body[1:]:
         if snake_pos[0] == block[0] and snake_pos[1] == block[1]:
             game_over()
+
+    # Winning game conditions
+    if score == 10:
+        win_game()
 
     show_score(1, white, 'consolas', 20)
     # Refresh game screen
